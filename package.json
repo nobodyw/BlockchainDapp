@@ -1,0 +1,36 @@
+{
+  "name": "blockchaindapp",
+  "version": "1.0.0",
+  "description": "Truffle",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npx truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nobodyw/BlockchainDapp.git"
+  },
+  "author": "nobodyw",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nobodyw/BlockchainDapp/issues"
+  },
+  "homepage": "https://github.com/nobodyw/BlockchainDapp#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.4.2",
+    "@openzeppelin/test-helpers": "^0.5.15",
+    "@truffle/hdwallet-provider": "^2.0.3",
+    "dotenv": "^14.3.2",
+    "solidity-docgen": "^0.6.0-beta.3",
+    "truffle": "^5.5.3",
+    "truffle-plugin-verify": "^0.5.21",
+    "web3": "^1.7.0"
+  },
+  "devDependencies": {
+    "eth-gas-reporter": "^0.2.24",
+    "solc-0.8": "npm:solc@^0.8.11"
+  }
+}
