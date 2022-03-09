@@ -14,27 +14,41 @@ const Home = () => {
   }, [isAuthenticated]);
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center">
-      <Head>
-        <title>Nobodyw Dapp</title>
-        <meta name="description" content="Blockchain dapp" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+    <Head>
+      <title>Nobodyw Dapp</title>
+      <meta name="description" content="Blockchain dapp" />
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
+
+    <Container>
+      <Row>
+        <Col>
+          <div className='justify-center flex' id='titre'>
+            <h1>Bienvenue sur Blockchain Dapp !</h1>
+          </div>
+       </Col>
+      </Row>
+    </Container>
+
+    <div className="flex items-center justify-center">
+
       <Container>
         <Row>
           <Col>
             <button
               onClick={() =>
-                authenticate({ signingMessage: "Authorize linking of your wallet" })
+                authenticate({ signingMessage: "authorize your metamsk to access the application" })
               }
               className="px-7 py-4 text-xl rounded-xl bg-yellow-300 animate-pulse"
             >
-              Login using Metamask
+              Connecte toi avec Metamask
             </button>
       </Col>
         </Row>
       </Container>
     </div>
+    </>
   )
 }
 

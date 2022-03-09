@@ -3,41 +3,43 @@ import { useMoralis } from 'react-moralis';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
+import style from '../Component/dashboard.module.css';
+import Wallet from '../Component/Wallet';
 
-const Home = () => {
-  const { isAuthenticated, authenticate } = useMoralis();
-  const router = useRouter();
+const Dashboard = () => {
+const { isAuthenticated, authenticate, logout, user } = useMoralis();
+const router = useRouter();
 
-  useEffect(() => {
-    if (!isAuthenticated) router.replace("/");
-  }, [isAuthenticated]);
+const addressEth = user.attributes.ethAddress.substr(0,5)+"***"+user.attributes.ethAddress.substr(5,5);
 
-  return (
-    <div className="h-screen w-screen flex items-center justify-center">
-      <Head>
+useEffect(() => {
+if (!isAuthenticated) router.replace("/");
+}, [isAuthenticated]);
+
+
+
+return (
+<div>
+    <Head>
         <title>Nobodyw Dapp</title>
         <meta name="description" content="Blockchain dapp" />
         <link rel="icon" href="/favicon.ico" />
-      </Head>
-        <Container>
-            <Row>
-                <Col>
-                <button
-                className="px-7 py-4 mb-5 text-xl rounded-xl bg-yellow-300"
+    </Head>
+    <Container>
+        <Row>
+            <Col>
+            <button onClick={()=> logout()}
+                className={style.btn +' px-7 py-4 text-xl rounded-xl'}
                 >
-                    Send 0.1 ETH to owner
-                </button>
-                <button
-                className="px-7 py-4 text-xl rounded-xl bg-yellow-300"
-                >
-                    Logout
-                </button>
-                </Col>
-            </Row>
-        </Container>
+                Déconnexion
+            </button>
+            </Col>
+            <Wallet/>
+        </Row>
+    </Container>
 
-    </div>
-  )
+</div>
+)
 }
 
-export default Home
+export default Dashboard
