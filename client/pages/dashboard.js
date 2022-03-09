@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useMoralis } from 'react-moralis';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import {Container, Row, Col} from 'react-bootstrap';
 
 const Home = () => {
   const { isAuthenticated, authenticate } = useMoralis();
@@ -18,17 +19,23 @@ const Home = () => {
         <meta name="description" content="Blockchain dapp" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+        <Container>
+            <Row>
+                <Col>
+                <button
+                className="px-7 py-4 mb-5 text-xl rounded-xl bg-yellow-300"
+                >
+                    Send 0.1 ETH to owner
+                </button>
+                <button
+                className="px-7 py-4 text-xl rounded-xl bg-yellow-300"
+                >
+                    Logout
+                </button>
+                </Col>
+            </Row>
+        </Container>
 
-      <button
-        className="px-7 py-4 mb-5 text-xl rounded-xl bg-yellow-300"
-      >
-        Send 0.1 ETH to owner
-      </button>
-      <button
-        className="px-7 py-4 text-xl rounded-xl bg-yellow-300"
-      >
-        Logout
-      </button>
     </div>
   )
 }
