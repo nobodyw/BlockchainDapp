@@ -2,8 +2,9 @@ import Head from 'next/head'
 import { useMoralis } from 'react-moralis';
 import { useRouter } from 'next/router';
 import { Container,Row,Col } from 'react-bootstrap';
+import { useEffect } from 'react';
 
-function Home(){
+export default function Home(){
   const { isAuthenticated, authenticate } = useMoralis();
   const router = useRouter();
 
@@ -46,9 +47,10 @@ function Home(){
     )
   }
   else{
-    router.replace('/dashboard');
-    return(<p></p>);
+    useEffect(() => {
+      router.replace("/dashboard");
+    });
+    return null;
   }
 }
 
-export default Home

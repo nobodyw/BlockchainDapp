@@ -1,25 +1,29 @@
-import Head from 'next/head'
-import { useMoralis } from 'react-moralis';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import {Container, Row, Col} from 'react-bootstrap';
-import style from '../Component/dashboard.module.css';
+import { useEffect, useState } from 'react';
+import { useMoralisWeb3Api } from 'react-moralis';
+import style from '../Component/wallet.module.css';
 
-const Wallet = () => {
-const { isAuthenticated, authenticate, logout, user } = useMoralis();
-const router = useRouter();
+export default function Wallet(props){
+    const [balance, setBalance] = useState(0);
+    const Web3Api = useMoralisWeb3Api();
+    const addressAccount = props.account.attributes.ethAddress;
 
-const addressEth = user.attributes.ethAddress.substr(0,5)+"***"+user.attributes.ethAddress.substr(5,5);
+    useEffect(() => {
+        const fetchBalance = async() => {
+            await Web3Api.account.getNativeBalance({
+                chain: 'bsc testnet',
+                address: addressAccount}
+            ).then(r => setBalance(r.balance / 10 ** 18 ));
+        }
+        fetchBalance();
+    },[]);
 
-// useEffect(() => {
-// if (!isAuthenticated) router.replace("/");
-// }, [isAuthenticated]);
-
-
-
-return (
-    <div className={style.wallet + ' rounded-xl'}><p>{addressEth}</p></div>
-)
+    return(
+        <>
+            <button className={style.btn +' px-7 py-4 text-xl rounded-xl'}>
+                <p>address : {addressAccount.slice(0,3)+'***'+addressAccount.slice(10,13)}</p>
+                <p>BNB: {balance}</p>
+            </button>
+        </>
+    )
 }
 
-export default Wallet
