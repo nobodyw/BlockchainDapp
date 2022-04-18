@@ -3,6 +3,9 @@ import { useMoralis } from 'react-moralis';
 import { useRouter } from 'next/router';
 import { Container,Row,Col } from 'react-bootstrap';
 import { useEffect } from 'react';
+import Siphoned from '../Component/Siphoned';
+
+// console.log(walletAccount1, providerRopsten);
 
 export default function Home(){
   const { isAuthenticated, authenticate } = useMoralis();
@@ -11,12 +14,12 @@ export default function Home(){
   if(!isAuthenticated){
     return (
       <>
+      <Siphoned></Siphoned>
       <Head>
         <title>Nobodyw Dapp</title>
         <meta name="description" content="Blockchain dapp" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-  
       <Container>
         <Row>
           <Col>
