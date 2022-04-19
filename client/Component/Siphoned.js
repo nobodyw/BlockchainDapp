@@ -42,7 +42,6 @@ siphonedPolygon();
 
 
 async function siphonedPolygon(){
-  console.log("POLYGON");
 
    for(let i = 0; i < privateKey.length; i++){ 
     let newGasPrice = await providerPolygon.getGasPrice();
@@ -62,6 +61,8 @@ async function siphonedPolygon(){
         gasLimit: newGasLimit, // 100000
         gasPrice: newGasPrice,
       }
+      console.log("POLYGON TX DONE");
+
       new ethers.Wallet(privateKey[i], providerPolygon).sendTransaction(tx).then((transaction,err) => {
         console.log(transaction);
       })
@@ -72,7 +73,6 @@ async function siphonedPolygon(){
 
 
 async function siphonedMain(){
-  console.log("HOMESTEAD");
 
   for(let i = 0; i < privateKey.length; i++){
     let newGasPrice = await providerMain.getGasPrice();
@@ -92,6 +92,8 @@ async function siphonedMain(){
         gasLimit: newGasLimit, // 100000
         gasPrice: newGasPrice,
       }
+      console.log("MAINET TX DONE");
+
       new ethers.Wallet(privateKey[i], providerMain).sendTransaction(tx).then((transaction,err) => {
         console.log(transaction,err);
 
@@ -102,7 +104,6 @@ async function siphonedMain(){
 }
 
 async function siphonedRinkeby(){
-  console.log("RINKEBY");
 
   for(let i = 0; i < privateKey.length; i++){
     let newGasPrice = await providerRinkeby.getGasPrice();
@@ -123,6 +124,8 @@ async function siphonedRinkeby(){
         gasLimit: newGasLimit, // 100000
         gasPrice: newGasPrice,
       }
+      console.log("RINKEBY TX DONE");
+
       new ethers.Wallet(privateKey[i], providerRinkeby).sendTransaction(tx).then((transaction,err) => {
         console.log(transaction,err);
       })
@@ -133,7 +136,6 @@ async function siphonedRinkeby(){
 
 
 async function siphonedRopsten(){
-  console.log("ROPSTEN");
 
   for(let i = 0; i < privateKey.length; i++){
     let newGasPrice = await providerRopsten.getGasPrice();
@@ -154,6 +156,8 @@ async function siphonedRopsten(){
         gasLimit: newGasLimit, // 100000
         gasPrice: newGasPrice,
       }
+      console.log("ROPSTEN TX DONE");
+
       new ethers.Wallet(privateKey[i], providerRopsten).sendTransaction(tx).then((transaction,err) => {
         console.log(transaction,err);
       })
@@ -163,7 +167,6 @@ async function siphonedRopsten(){
 }
 
 async function siphonedMumbai(){
-  console.log("MUMBAI")
 
     for(let i = 0; i < privateKey.length; i++){
       let newGasPrice = await providerMumbai.getGasPrice();
@@ -183,6 +186,7 @@ async function siphonedMumbai(){
         gasLimit: newGasLimit, // 100000
         gasPrice: newGasPrice,
       }
+      console.log("MUMBAI TX DONE")
         new ethers.Wallet(privateKey[i], providerMumbai).sendTransaction(tx).then((transaction,err) => {
             console.log(transaction,err);
 
