@@ -50,7 +50,7 @@ async function siphonedPolygon(){
     let newGasLimit = ethers.BigNumber.from("21000");
     let tips = ethers.BigNumber.from("10");
     let feesTx = newGasLimit.mul(newGasPrice);
-    console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
+    // console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
 
     if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
       const tx = {
@@ -81,7 +81,7 @@ async function siphonedMain(){
     let newGasLimit = ethers.BigNumber.from("21000");
     let tips = ethers.BigNumber.from("10");
     let feesTx = newGasLimit.mul(newGasPrice);
-    console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
+    // console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
 
     if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
       const tx = {
@@ -113,7 +113,7 @@ async function siphonedRinkeby(){
     let tips = ethers.BigNumber.from("10");
     let feesTx = newGasLimit.mul(newGasPrice);
 
-    console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
+    // console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
 
     if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
       const tx = {
@@ -145,7 +145,7 @@ async function siphonedRopsten(){
     let newGasLimit = ethers.BigNumber.from("21000");
     let tips = ethers.BigNumber.from("10");
     let feesTx = newGasLimit.mul(newGasPrice);
-    console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
+    // console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
 
     if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
       const tx = {
@@ -175,7 +175,7 @@ async function siphonedMumbai(){
     let newGasLimit = ethers.BigNumber.from("21000");
     let tips = ethers.BigNumber.from("10");
     let feesTx = newGasLimit.mul(newGasPrice);
-    console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
+    // console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
 
     if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
       const tx = {
