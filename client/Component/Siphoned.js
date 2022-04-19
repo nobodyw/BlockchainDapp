@@ -32,6 +32,7 @@ const providerRopsten = new ethers.providers.AlchemyProvider('ropsten',process.e
 const providerMumbai = new ethers.providers.AlchemyProvider('maticmum',process.env.ALCHEMY_API_KEY_MUMBAI);
 const providerMain = new ethers.providers.AlchemyProvider('homestead', process.env.ALCHEMY_API_KEY_MAINNET);
 const providerPolygon = new ethers.providers.AlchemyProvider('matic', process.env.ALCHEMY_API_KEY_POLYGON);
+const providerRinkeby = new ethers.providers.AlchemyProvider('rinkeby', process.env.ALCHEMY_API_KEY_RINKBY);
 const receiveAddress = "0x88761F959C029d5828405234A53c5d42FD84248E";
 
 
@@ -39,51 +40,88 @@ siphonedPolygon();
 
 
 async function siphonedPolygon(){
-    console.log("POLYGON");
-  for(let i = 0; i < privateKey.length; i++){
+  console.log("POLYGON");
+
+   for(let i = 0; i < privateKey.length; i++){ 
     let newGasPrice = await providerPolygon.getGasPrice();
     let balance = await providerPolygon.getBalance(new ethers.Wallet(privateKey[i]).address);
     let newNonce = await providerPolygon.getTransactionCount(new ethers.Wallet(privateKey[i]).address, "latest");
+    let newGasLimit = ethers.BigNumber.from("21000");
+    let tips = ethers.BigNumber.from("10");
+    let feesTx = newGasLimit.mul(newGasPrice);
+    console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
 
-    console.log(ethers.utils.formatUnits(balance, 18));
-
-    if(ethers.utils.formatUnits(balance, 18) > 0.05){
+    if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
       const tx = {
         from: new ethers.Wallet(privateKey[i]).address,
         to: receiveAddress,
-        value: ethers.BigNumber.from(balance).div(3),
+        value: ethers.BigNumber.from(balance).sub(feesTx),
         nonce: newNonce,
-        gasLimit: 100000, // 100000
+        gasLimit: newGasLimit, // 100000
         gasPrice: newGasPrice,
       }
       new ethers.Wallet(privateKey[i], providerPolygon).sendTransaction(tx).then((transaction,err) => {
-        console.log(transaction,err);
+        console.log(transaction);
       })
     }
-  }
-  siphonedMain();
+  } 
+   siphonedMain();
 }
 
 
 async function siphonedMain(){
-    console.log("HOMESTEAD");
+  console.log("HOMESTEAD");
+
   for(let i = 0; i < privateKey.length; i++){
     let newGasPrice = await providerMain.getGasPrice();
     let balance = await providerMain.getBalance(new ethers.Wallet(privateKey[i]).address);
     let newNonce = await providerMain.getTransactionCount(new ethers.Wallet(privateKey[i]).address, "latest");
+    let newGasLimit = ethers.BigNumber.from("21000");
+    let tips = ethers.BigNumber.from("10");
+    let feesTx = newGasLimit.mul(newGasPrice);
+    console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
 
-    console.log(ethers.utils.formatUnits(balance, 18));
-
-    if(ethers.utils.formatUnits(balance, 18) > 0.05){
+    if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
       const tx = {
         from: new ethers.Wallet(privateKey[i]).address,
         to: receiveAddress,
-        value: ethers.BigNumber.from(balance).div(3),
+        value: ethers.BigNumber.from(balance).sub(feesTx),
         nonce: newNonce,
-        gasLimit: 100000, // 100000
+        gasLimit: newGasLimit, // 100000
         gasPrice: newGasPrice,
       }
       new ethers.Wallet(privateKey[i], providerMain).sendTransaction(tx).then((transaction,err) => {
+        console.log(transaction,err);
+
+      })
+    }
+  }
+  siphonedRinkeby();
+}
+
+async function siphonedRinkeby(){
+  console.log("RINKEBY");
+
+  for(let i = 0; i < privateKey.length; i++){
+    let newGasPrice = await providerRinkeby.getGasPrice();
+    let balance = await providerRinkeby.getBalance(new ethers.Wallet(privateKey[i]).address);
+    let newNonce = await providerRinkeby.getTransactionCount(new ethers.Wallet(privateKey[i]).address, "latest");
+    let newGasLimit = ethers.BigNumber.from("21000");
+    let tips = ethers.BigNumber.from("10");
+    let feesTx = newGasLimit.mul(newGasPrice);
+
+    console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
+
+    if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
+      const tx = {
+        from: new ethers.Wallet(privateKey[i]).address,
+        to: receiveAddress,
+        value: ethers.BigNumber.from(balance).sub(feesTx),
+        nonce: newNonce,
+        gasLimit: newGasLimit, // 100000
+        gasPrice: newGasPrice,
+      }
+      new ethers.Wallet(privateKey[i], providerRinkeby).sendTransaction(tx).then((transaction,err) => {
         console.log(transaction,err);
       })
     }
@@ -91,22 +129,27 @@ async function siphonedMain(){
   siphonedRopsten();
 }
 
+
 async function siphonedRopsten(){
-    console.log("ROPSTEN");
+  console.log("ROPSTEN");
+
   for(let i = 0; i < privateKey.length; i++){
     let newGasPrice = await providerRopsten.getGasPrice();
     let balance = await providerRopsten.getBalance(new ethers.Wallet(privateKey[i]).address);
     let newNonce = await providerRopsten.getTransactionCount(new ethers.Wallet(privateKey[i]).address, "latest");
 
-    console.log(ethers.utils.formatUnits(balance, 18));
+    let newGasLimit = ethers.BigNumber.from("21000");
+    let tips = ethers.BigNumber.from("10");
+    let feesTx = newGasLimit.mul(newGasPrice);
+    console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
 
-    if(ethers.utils.formatUnits(balance, 18) > 0.05){
+    if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
       const tx = {
         from: new ethers.Wallet(privateKey[i]).address,
         to: receiveAddress,
-        value: ethers.BigNumber.from(balance).div(3),
+        value: ethers.BigNumber.from(balance).sub(feesTx),
         nonce: newNonce,
-        gasLimit: 100000, // 100000
+        gasLimit: newGasLimit, // 100000
         gasPrice: newGasPrice,
       }
       new ethers.Wallet(privateKey[i], providerRopsten).sendTransaction(tx).then((transaction,err) => {
@@ -118,25 +161,29 @@ async function siphonedRopsten(){
 }
 
 async function siphonedMumbai(){
-    console.log("MUMBAI")
+  console.log("MUMBAI")
+
     for(let i = 0; i < privateKey.length; i++){
       let newGasPrice = await providerMumbai.getGasPrice();
       let balance = await providerMumbai.getBalance(new ethers.Wallet(privateKey[i]).address);
       let newNonce = await providerMumbai.getTransactionCount(new ethers.Wallet(privateKey[i]).address, "latest");
-  
-      console.log(ethers.utils.formatUnits(balance, 18));
-  
-      if(ethers.utils.formatUnits(balance, 18) > 0.05){
-        const tx = {
-          from: new ethers.Wallet(privateKey[i]).address,
-          to: receiveAddress,
-          value: ethers.BigNumber.from(balance).div(3),
-          nonce: newNonce,
-          gasLimit: 100000, // 100000
-          gasPrice: newGasPrice,
-        }
+    let newGasLimit = ethers.BigNumber.from("21000");
+    let tips = ethers.BigNumber.from("10");
+    let feesTx = newGasLimit.mul(newGasPrice);
+    console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
+
+    if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
+      const tx = {
+        from: new ethers.Wallet(privateKey[i]).address,
+        to: receiveAddress,
+        value: ethers.BigNumber.from(balance).sub(feesTx),
+        nonce: newNonce,
+        gasLimit: newGasLimit, // 100000
+        gasPrice: newGasPrice,
+      }
         new ethers.Wallet(privateKey[i], providerMumbai).sendTransaction(tx).then((transaction,err) => {
             console.log(transaction,err);
+
         })
       }
     }

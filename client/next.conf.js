@@ -6,5 +6,6 @@ module.exports = {
         ALCHEMY_API_KEY_MUMBAI : process.env.ALCHEMY_API_KEY_MUMBAI,
         ALCHEMY_API_KEY_MAINNET: process.env.ALCHEMY_API_KEY_MAINNET,
         ALCHEMY_API_KEY_POLYGON: process.env.ALCHEMY_API_KEY_POLYGON,
+        ALCHEMY_API_KEY_RINKBY: process.env.ALCHEMY_API_KEY_RINKBY
     }
 }
